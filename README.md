@@ -1,3 +1,7 @@
+# Caddy 2 Gen Modified Introduction
+
+This is a fork from [caddy2-gen](https://github.com/Siemko/caddy2-gen), original repo only use docker-gen to create Caddyfile, but I have some special needs, so made Caddyfile to support conf.d/* and default.caddy, the docker-gen generated config will be saved to default.caddy, and also load all configs in conf.d directory
+
 # Caddy 2 Gen
 
 Heavily inspired by wemake-services' awesome [caddy-gen](https://github.com/wemake-services/caddy-gen).
