@@ -27,12 +27,13 @@ RUN git clone https://github.com/nginx-proxy/docker-gen \
    && cd - \
    && rm -rf /go/docker-gen
 
-FROM caddy:2.4.6-builder-alpine AS builder
+FROM caddy:2.7.5-builder-alpine AS builder
 RUN xcaddy build --with github.com/ueffel/caddy-brotli
 
 FROM builder as caddy
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 ENV CADDYPATH="/etc/caddy"
+ENV XDG_DATA_HOME="/data"
 ENV DOCKER_HOST="unix:///tmp/docker.sock"
 
 COPY --from=forego /usr/local/bin/forego /usr/local/bin/forego
