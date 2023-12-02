@@ -1,9 +1,10 @@
 ARG DOCKER_GEN_VERSION="0.8.4"
 ARG FOREGO_VERSION="v0.17.0"
+ARG CADDY_VERSION="2.7.5"
+ARG GO_VERSION="1.18.0"
 
-FROM golang:1.18.0 as gobuilder
 
-FROM gobuilder as forego
+FROM golang:${GO_VERSION} as forego
 ARG FOREGO_VERSION
 RUN git clone https://github.com/nginx-proxy/forego/ \
    && cd /go/forego \
@@ -15,7 +16,7 @@ RUN git clone https://github.com/nginx-proxy/forego/ \
    && cd - \
    && rm -rf /go/forego
 
-FROM gobuilder as dockergen
+FROM golang:${GO_VERSION} as dockergen
 ARG DOCKER_GEN_VERSION
 RUN git clone https://github.com/nginx-proxy/docker-gen \
    && cd /go/docker-gen \
@@ -27,10 +28,10 @@ RUN git clone https://github.com/nginx-proxy/docker-gen \
    && cd - \
    && rm -rf /go/docker-gen
 
-FROM caddy:2.7.5-builder-alpine AS builder
+FROM caddy:${CADDY_VERSION}-builder-alpine AS builder
 RUN xcaddy build --with github.com/ueffel/caddy-brotli
 
-FROM builder as caddy
+FROM caddy:${CADDY_VERSION}-alpine as caddy
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 ENV CADDYPATH="/etc/caddy"
 ENV XDG_DATA_HOME="/data"
