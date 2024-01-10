@@ -1,3 +1,11 @@
+{
+    log default {
+        output stdout
+        format json
+        include http.log.access admin.api
+    }
+}
+
 import default.d/*
 import conf.d/*
 
